@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+  </head>
+  <body ng-app="myApp" ng-controller="myController">
+    <div class="container mt-3">
+        <nav aria-label="Page navigation example  ">
+            <ul class="pagination">
+              <li class="page-item" ng-repeat="count in values|range:limit:start+1">
+              <a ng-if="count|isNum" ng-click="$parent.$parent.start=count" class="page-link" href="#">{{count+1}}</a>
+              <a ng-if="!(count|isNum)" class="page-link" href="#">{{count}}</a>
+            </li>
+             
+            </ul>
+          </nav>
+    </div>
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <script>
+        var app=  angular.module('myApp', []);
+        app.controller("myController", function($scope) {
+          $scope.values = 1000;
+          $scope.limit = 10;
+          $scope.start=0;
+        })
+        app.filter('range', function() {
+          return function(val, limit, current) {
+            var arr = [];
+            val = val / limit;
+            if (current < 6) {
+              for (var i = 0; i < 8; i++)
+                arr.push(i);
+              arr.push("...");
+              arr.push(val - 1)
+            } else if (current > (val - 5)) {
+              arr.push(0)
+              arr.push("...");
+              for (var i = val - 7; i < val; i++)
+                arr.push(i);
+            } else {
+              arr.push(0);
+              arr.push("...")
+              arr.push(current - 3);
+              arr.push(current - 2);
+              arr.push(current - 1);
+              arr.push(current);
+              arr.push(current + 1);
+              arr.push("....")
+              arr.push(val - 1)
+            }
+            return arr;
+          }
+        })
+        app.filter('slice', function() {
+          return function(arr, end, start) {
+            start = start || 0;
+            return (arr || []).slice(start, start + end);
+          };
+        })
+        app.filter('isNum', function() {
+          return function(val) {
+            return !isNaN(val)
+          };
+        });
+      </script> 
+</body>
+</html>
