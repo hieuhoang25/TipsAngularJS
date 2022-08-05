@@ -1,0 +1,30 @@
+<div id="path" class="bg-info p-2 text-uppercase text-white"> Trang chủ &gt; {{loaitintuc}}</div>
+<div class="list-group list-group-flush">
+  <a href="#" class="list-group-item list-group-item-action" ng-repeat="tt in tintuc|limitTo:limit:startItem" aria-current="true">
+   
+            <div class="card-title d-flex align-item-center justify-content-between">
+                <h4>
+                    {{tt.TieuDe}}
+                </h4>
+                <p >
+                    Số lần xem: {{tt.Xem}}
+                </p>
+            </div>
+            <i>Ngày đăng: {{tt.Ngay}}</i>
+            <p class="card-text">
+                {{tt.TomTat}}
+            </p>
+    
+  </a>
+  <div class="container mt-3 d-flex align-text-center justify-content-center">
+    <nav aria-label="Page navigation example  ">
+        <ul class="pagination">
+          <li class="page-item" ng-repeat="count in tintuc.length|range:limit:start+1">
+          <button ng-if="count|isNum" ng-click="toPage(count)" class="page-link" >{{count+1}}</button>
+          <a ng-if="!(count|isNum)" class="page-link">{{count}}</a>
+        </li>
+         
+        </ul>
+      </nav>
+</div>
+</div>

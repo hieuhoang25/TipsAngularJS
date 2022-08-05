@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> 
+    <style>
+        .carousel-item {
+  height: 100vh;
+  min-height: 350px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+    </style>
+</head>
+  <body ng-app="bai1">
+   <div class="main">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+          <div class="container">
+            <a class="navbar-brand" href="#">Hi Code</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="#!home">Trang chủ </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/Thể thao">Thể thao</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/Sống đẹp">Sống đẹp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/Sức khỏe">Sức khỏe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/Thơ hay">Thơ hay</a>
+                    </li>
+                </ul>
+                
+            </div>
+      </div>
+    </nav>
+    <div class="container" ng-view>
+
+    </div>
+   </div>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script>
+        var app = angular.module("bai1", ["ngRoute"]);
+        app.config(function($routeProvider) {
+            $routeProvider
+            .when("/home",{templateUrl:"index.html"})
+            .when("/:ten",{templateUrl:"tintuc.html", controller:"tintuc"} )
+           
+        })
+        app.controller("tintuc",function($scope, $http, $routeParams){
+            $scope.tintuc=[];
+            $scope.loaitintuc =  $routeParams.ten;
+            $http.get("../js/"+$scope.loaitintuc+".js").then(function(response){
+                $scope.tintuc = response.data;
+            }, function(response){
+                alert("Something went wrong!");
+            })
+            $scope.limit = 3;
+            $scope.start = 0;
+            $scope.startItem =  $scope.start *$scope.limit;
+            $scope.toPage = function(count){
+                if(count!="..."){
+                    $scope.start = count;
+            $scope.startItem =  $scope.start *$scope.limit;
+                }
+           
+          }
+          
+        })
+        app.filter('range', function() {
+          return function(val, limit, current) {
+            var arr = [];
+            val = Math.ceil( val / limit);
+            if (val<10){
+              for (var i = 0; i < val; i++)
+                arr.push(i);
+            }
+            else{
+              if (current < 6) {
+              for (var i = 0; i < 8; i++)
+                arr.push(i);
+              arr.push("...");
+              arr.push(val - 1)
+            } else if (current > (val - 5)) {
+              arr.push(0)
+              arr.push("...");
+              for (var i = val - 7; i < val; i++)
+                arr.push(i);
+            } else {
+              arr.push(0);
+              arr.push("...")
+              arr.push(current - 3);
+              arr.push(current - 2);
+              arr.push(current - 1);
+              arr.push(current);
+              arr.push(current + 1);
+              arr.push("....")
+              arr.push(val - 1)
+            }
+            }
+          
+            return arr;
+          }
+        })
+        
+        app.filter('isNum', function() {
+          return function(val) {
+            return !isNaN(val)
+          };
+        });
+    </script>
+   
+</body>
+</html>
